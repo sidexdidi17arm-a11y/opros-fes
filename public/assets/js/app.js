@@ -248,9 +248,8 @@
                         }
                     }
                     
-                    if (username === 'viewer' && password !== '') {
-                        this.showNotification('Для наблюдателя пароль не требуется!', 'warning');
-                        return;
+                    if (username === 'viewer') {
+                        // Для наблюдателя пароль игнорируем (браузер может автозаполнить)
                     }
                     
                     this.currentUser = { 
@@ -287,6 +286,29 @@
                 const loginForm = document.getElementById('loginForm');
                 if (loginForm) {
                     loginForm.addEventListener('submit', (e) => this.login(e));
+                }
+
+                // Переключение режима входа (админ с паролем / наблюдатель без пароля)
+                const usernameSelect = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+                const applyLoginMode = () => {
+                    if (!usernameSelect || !passwordInput) return;
+                    const u = usernameSelect.value;
+                    if (u === 'viewer') {
+                        // Для наблюдателя пароль не нужен: очищаем и блокируем поле,
+                        // чтобы автозаполнение браузера не мешало входу.
+                        passwordInput.value = '';
+                        passwordInput.disabled = true;
+                        passwordInput.placeholder = 'Пароль не требуется';
+                    } else {
+                        passwordInput.disabled = false;
+                        passwordInput.placeholder = 'Введите пароль';
+                    }
+                };
+                if (usernameSelect) {
+                    usernameSelect.addEventListener('change', applyLoginMode);
+                    // применяем при инициализации (на случай автозаполнения/кэша)
+                    applyLoginMode();
                 }
                 
                 const logoutBtn = document.getElementById('logoutBtn');
@@ -1664,31 +1686,6 @@
                 }
             
             }
-                    
-                    if (!confirm('ВЫ УВЕРЕНЫ, ЧТО ХОТИТЕ УДАЛИТЬ ВСЕ ДАННЫЕ?\n\nЭто действие нельзя отменить. Все данные будут удалены безвозвратно.')) {
-                        return;
-                    }
-                    
-                    this.weeklyData = [];
-                    localStorage.removeItem(AppConfig.STORAGE_KEYS.DATA);
-                    
-                    this.updateStats();
-                    this.updateDetailedTable();
-                    this.updateHistoryTable();
-                    this.updateReportDates();
-                    this.updateStatisticsSelects();
-                    
-                    if (this.verticalChart) {
-                        this.verticalChart.destroy();
-                        this.verticalChart = null;
-                    }
-                    
-                    this.showNotification('Все данные успешно очищены!', 'info');
-                } catch (error) {
-                    console.error('Ошибка очистки данных:', error);
-                    this.showNotification('Ошибка очистки данных', 'danger');
-                }
-            }
             
             updateReportDates() {
                 const weeklyDate = document.getElementById('weeklyReportDate');
@@ -2664,7 +2661,6 @@
                 }
             
             }
-            }
             
             async loadFromLocalStorage() {
                 try {
@@ -2702,11 +2698,6 @@
                     }
                 }
             
-            }
-                } catch (e) {
-                    console.error('Ошибка загрузки данных:', e);
-                    this.weeklyData = [];
-                }
             }
         }
 
