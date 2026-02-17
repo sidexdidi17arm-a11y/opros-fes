@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 ПАО "Россети-Юг" - Статистика опроса по ФЭС</title>
+    <title>📊 ПАО "Россети-Юг" - Статистика опроса по РЭС</title>
     <style>
         :root {
             --primary: #1e40af;
@@ -1053,7 +1053,7 @@
             <div class="login-logo">
                 <i class="fas fa-chart-network"></i>
             </div>
-            <h2 class="login-title">Статистика опроса по ФЭС</h2>
+            <h2 class="login-title">Статистика опроса по РЭС</h2>
             <p class="login-subtitle">Войдите в систему для доступа к статистике опроса приборов учёта</p>
             
             <form class="login-form" id="loginForm">
@@ -1104,7 +1104,7 @@
                     <i class="fas fa-chart-network"></i>
                     ПАО "Россети-Юг"
                 </h1>
-                <div class="header-subtitle">Статистика опроса по ФЭС</div>
+                <div class="header-subtitle">Статистика опроса по РЭС</div>
                 <div class="header-description">Еженедельный мониторинг показателей опроса приборов учёта. ПС РЭС не учитывается в общих показателях.</div>
             </div>
         </header>
@@ -1133,7 +1133,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 50px;">№</th>
-                                <th>ФЭС</th>
+                                <th>РЭС</th>
                                 <th>Всего ПУ</th>
                                 <th>В опросе</th>
                                 <th>Не в опросе</th>
@@ -1168,7 +1168,7 @@
             <div class="chart-section">
                 <h4 class="chart-title">
                     <i class="fas fa-chart-bar"></i>
-                    Динамика процента опроса по ФЭС (без ПС РЭС)
+                    Динамика процента опроса по РЭС (без ПС РЭС)
                 </h4>
                 <div class="chart-wrapper">
                     <canvas id="verticalChart"></canvas>
@@ -1200,7 +1200,7 @@
 
                 <h4 style="margin: 30px 0 20px; color: var(--dark); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px;">
                     <i class="fas fa-bolt"></i>
-                    Данные по ФЭС
+                    Данные по РЭС
                 </h4>
                 
                 <div class="input-grid" id="resInputGrid">
@@ -1405,13 +1405,13 @@
         // Конфигурация приложения
         const AppConfig = {
             RES_LIST: [
-                { id: 'adler', name: 'Адлерский ФЭС', color: '#1e40af' },
-                { id: 'dagomys', name: 'Дагомысский ФЭС', color: '#0ea5e9' },
-                { id: 'krasnopolyansky', name: 'Краснополянский ФЭС', color: '#8b5cf6' },
-                { id: 'lazarevsky', name: 'Лазаревский ФЭС', color: '#06b6d4' },
-                { id: 'sochi', name: 'Сочинский ФЭС', color: '#3b82f6' },
-                { id: 'tuapse', name: 'Туапсинский ФЭС', color: '#6366f1' },
-                { id: 'hostinsky', name: 'Хостинский ФЭС', color: '#2563eb' },
+                { id: 'adler', name: 'Адлерский РЭС', color: '#1e40af' },
+                { id: 'dagomys', name: 'Дагомысский РЭС', color: '#0ea5e9' },
+                { id: 'krasnopolyansky', name: 'Краснополянский РЭС', color: '#8b5cf6' },
+                { id: 'lazarevsky', name: 'Лазаревский РЭС', color: '#06b6d4' },
+                { id: 'sochi', name: 'Сочинский РЭС', color: '#3b82f6' },
+                { id: 'tuapse', name: 'Туапсинский РЭС', color: '#6366f1' },
+                { id: 'hostinsky', name: 'Хостинский РЭС', color: '#2563eb' },
                 { id: 'ps', name: 'ПС РЭС', color: '#7c3aed', isPsRes: true }
             ],
             
@@ -1547,7 +1547,7 @@
                 
                 // Всегда показываем эти вкладки
                 const commonTabs = [
-                    { id: 'stats', icon: 'chart-bar', label: 'Статистика по ФЭС' },
+                    { id: 'stats', icon: 'chart-bar', label: 'Статистика по РЭС' },
                     { id: 'history', icon: 'history', label: 'История' },
                     { id: 'reports', icon: 'file-chart-line', label: 'Отчёты' },
                     { id: 'statistics', icon: 'chart-pie', label: 'В статистику' }
@@ -2082,7 +2082,7 @@
                     });
     
                     if (!hasData) {
-                        this.showNotification('Пожалуйста, введите данные хотя бы для одного ФЭС!', 'warning');
+                        this.showNotification('Пожалуйста, введите данные хотя бы для одного РЭС!', 'warning');
                         return;
                     }
     
@@ -2407,11 +2407,11 @@
                                 </div>
                                 <div class="stat-detail-item">
                                     <div class="stat-detail-value" style="color: var(--success);">${bestRES.name}</div>
-                                    <div class="stat-detail-label">Лучший ФЭС</div>
+                                    <div class="stat-detail-label">Лучший РЭС</div>
                                 </div>
                                 <div class="stat-detail-item">
                                     <div class="stat-detail-value" style="color: var(--danger);">${worstRES.name}</div>
-                                    <div class="stat-detail-label">Худший ФЭС</div>
+                                    <div class="stat-detail-label">Худший РЭС</div>
                                 </div>
                             </div>
                         </div>
@@ -2678,7 +2678,7 @@
                     const filteredData = weekData.data.filter(item => !item.isPsRes);
                     const sortedData = [...filteredData].sort((a, b) => b.percent - a.percent);
                     
-                    // Добавляем строки для обычных ФЭС
+                    // Добавляем строки для обычных РЭС
                     sortedData.forEach((item, index) => {
                         const res = AppConfig.RES_LIST.find(r => r.id === item.id);
                         
@@ -2963,7 +2963,7 @@
                             <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th>ФЭС</th>
+                                    <th>РЭС</th>
                                     <th>Всего ПУ</th>
                                     <th>В опросе</th>
                                     <th>Не в опросе</th>
@@ -3169,7 +3169,7 @@
                     let csvContent = "data:text/csv;charset=utf-8,";
                     
                     // Заголовки
-                    csvContent += "Дата,ФЭС,Всего ПУ,ПУ в опросе,ПУ не в опросе,% опроса,СПОДЭС ПУ,СПОДЭС в опросе,СПОДЭС не в опросе,% СПОДЭС,Примечание\n";
+                    csvContent += "Дата,РЭС,Всего ПУ,ПУ в опросе,ПУ не в опросе,% опроса,СПОДЭС ПУ,СПОДЭС в опросе,СПОДЭС не в опросе,% СПОДЭС,Примечание\n";
                     
                     // Данные
                     this.weeklyData.forEach(week => {
@@ -3242,7 +3242,7 @@
                         <html>
                         <head>
                             <meta charset="UTF-8">
-                            <title>Еженедельный отчет по опросу ФЭС</title>
+                            <title>Еженедельный отчет по опросу РЭС</title>
                             <style>
                                 body { font-family: 'Inter', Arial, sans-serif; margin: 25px; color: #1e293b; }
                                 h1 { color: #1e40af; margin-bottom: 10px; font-size: 28px; font-weight: 900; }
@@ -3259,7 +3259,7 @@
                         </head>
                         <body>
                             <div class="header-info">
-                                <h1>Еженедельный отчет по опросу ФЭС</h1>
+                                <h1>Еженедельный отчет по опросу РЭС</h1>
                                 <p><strong>Отчет за неделю:</strong> ${reportDate}</p>
                                 <p><strong>Дата формирования отчета:</strong> ${new Date().toLocaleString('ru-RU')}</p>
                                 <p><strong>Сформировал:</strong> ${this.currentUser?.name || 'Неизвестно'}</p>
@@ -3278,11 +3278,11 @@
                                 <p>СПОДЭС не в опросе: <strong>${weekData.data.filter(item => !item.isPsRes).reduce((sum, item) => sum + item.spoNotInSurvey, 0).toLocaleString()}</strong></p>
                             </div>
                             
-                            <h2>Детализация по ФЭС</h2>
+                            <h2>Детализация по РЭС</h2>
                             <table>
                                 <tr>
                                     <th>№</th>
-                                    <th>ФЭС</th>
+                                    <th>РЭС</th>
                                     <th>Всего ПУ</th>
                                     <th>В опросе</th>
                                     <th>Не в опросе</th>
@@ -3337,7 +3337,7 @@
                             </table>
                             
                             <div class="footer">
-                                <p><strong>Примечание:</strong> Отчет сгенерирован автоматически системой статистики опроса ФЭС.</p>
+                                <p><strong>Примечание:</strong> Отчет сгенерирован автоматически системой статистики опроса РЭС.</p>
                                 <p>ПАО "Россети-Юг" - Еженедельный мониторинг показателей опроса приборов учёта.</p>
                                 <p>Отчет относится к неделе, завершившейся ${reportDate}.</p>
                             </div>
@@ -3386,7 +3386,7 @@
                         <html>
                         <head>
                             <meta charset="UTF-8">
-                            <title>Аналитический отчет по опросу ФЭС</title>
+                            <title>Аналитический отчет по опросу РЭС</title>
                             <style>
                                 body { font-family: 'Inter', Arial, sans-serif; margin: 25px; color: #1e293b; }
                                 h1 { color: #1e40af; margin-bottom: 10px; font-size: 28px; font-weight: 900; }
@@ -3401,7 +3401,7 @@
                         </head>
                         <body>
                             <div class="header-info">
-                                <h1>Аналитический отчет по опросу ФЭС</h1>
+                                <h1>Аналитический отчет по опросу РЭС</h1>
                                 <div class="period">
                                     <p><strong>Период анализа:</strong> ${this.formatDate(new Date(firstWeek.date))} - ${this.formatDate(new Date(lastWeek.date))}</p>
                                     <p><strong>Дата формирования отчета:</strong> ${new Date().toLocaleString('ru-RU')}</p>
@@ -3424,10 +3424,10 @@
                                 
                                 <div class="insight">
                                     <h3>🎯 Лучшие и худшие показатели</h3>
-                                    <p>ФЭС с наивысшим процентом опроса в последнюю неделю: 
+                                    <p>РЭС с наивысшим процентом опроса в последнюю неделю: 
                                     <strong>${this.findBestRES(lastWeek).name}</strong> 
                                     (${(this.findBestRES(lastWeek).percent * 100).toFixed(2)}%)</p>
-                                    <p>ФЭС с наименьшим процентом опроса в последнюю неделю: 
+                                    <p>РЭС с наименьшим процентом опроса в последнюю неделю: 
                                     <strong>${this.findWorstRES(lastWeek).name}</strong> 
                                     (${(this.findWorstRES(lastWeek).percent * 100).toFixed(2)}%)</p>
                                 </div>
@@ -3448,7 +3448,7 @@
                                 <div class="insight">
                                     <h3>✅ Приоритетные действия</h3>
                                     <ul>
-                                        <li>Сфокусироваться на ФЭС с низким процентом опроса</li>
+                                        <li>Сфокусироваться на РЭС с низким процентом опроса</li>
                                         <li>Увеличить охват СПОДЭС в опросе</li>
                                         <li>Провести анализ причин низкого охвата в отдельных районах</li>
                                         <li>Оптимизировать процесс сбора данных</li>
@@ -3459,7 +3459,7 @@
                                 <div class="insight">
                                     <h3>📊 Ключевые метрики для мониторинга</h3>
                                     <ul>
-                                        <li>Процент опроса по каждому ФЭС (цель: >95%)</li>
+                                        <li>Процент опроса по каждому РЭС (цель: >95%)</li>
                                         <li>Количество ПУ не в опросе</li>
                                         <li>Процент СПОДЭС в опросе</li>
                                         <li>Динамика изменения показателей за 4 недели</li>
@@ -3609,11 +3609,11 @@
                                 </span></p>
                             </div>
                             
-                            <h2>Детализация изменений по ФЭС</h2>
+                            <h2>Детализация изменений по РЭС</h2>
                             <table>
                                 <tr>
                                     <th>№</th>
-                                    <th>ФЭС</th>
+                                    <th>РЭС</th>
                                     <th>Всего ПУ (было)</th>
                                     <th>Всего ПУ (стало)</th>
                                     <th>Изменение</th>
@@ -3626,7 +3626,7 @@
                                 </tr>
                     `;
                     
-                    // Детализация по каждому ФЭС
+                    // Детализация по каждому РЭС
                     AppConfig.RES_LIST.filter(res => res.id !== 'ps').forEach((res, index) => {
                         const currentRes = weekData.data.find(item => item.id === res.id);
                         const previousRes = previousWeekData.data.find(item => item.id === res.id);
@@ -3775,7 +3775,7 @@
                         <html>
                         <head>
                             <meta charset="UTF-8">
-                            <title>Сравнительный отчет по опросу ФЭС</title>
+                            <title>Сравнительный отчет по опросу РЭС</title>
                             <style>
                                 body { font-family: 'Inter', Arial, sans-serif; margin: 25px; color: #1e293b; }
                                 h1 { color: #1e40af; margin-bottom: 10px; font-size: 28px; font-weight: 900; }
@@ -3796,7 +3796,7 @@
                         </head>
                         <body>
                             <div class="header-info">
-                                <h1>Сравнительный отчет по опросу ФЭС</h1>
+                                <h1>Сравнительный отчет по опросу РЭС</h1>
                                 <p><strong>Сравниваемые недели:</strong> ${date1Formatted} vs ${date2Formatted}</p>
                                 <p><strong>Дата формирования отчета:</strong> ${new Date().toLocaleString('ru-RU')}</p>
                                 <p><strong>Сформировал:</strong> ${this.currentUser?.name || 'Неизвестно'}</p>
@@ -3839,11 +3839,11 @@
                                 </span></p>
                             </div>
                             
-                            <h2>Детальное сравнение по ФЭС</h2>
+                            <h2>Детальное сравнение по РЭС</h2>
                             <table>
                                 <tr>
                                     <th>№</th>
-                                    <th>ФЭС</th>
+                                    <th>РЭС</th>
                                     <th>Всего ПУ (${date1Formatted})</th>
                                     <th>Всего ПУ (${date2Formatted})</th>
                                     <th>Δ Всего ПУ</th>
@@ -3854,7 +3854,7 @@
                                 </tr>
                     `;
                     
-                    // Детализация по каждому ФЭС
+                    // Детализация по каждому РЭС
                     AppConfig.RES_LIST.filter(res => res.id !== 'ps').forEach((res, index) => {
                         const week1Res = week1Data.data.find(item => item.id === res.id);
                         const week2Res = week2Data.data.find(item => item.id === res.id);
