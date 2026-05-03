@@ -2314,7 +2314,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 14px;
             align-items: stretch;
         }
@@ -2566,7 +2566,7 @@
 
         @media (max-width: 1400px) {
             .stats-grid {
-                grid-template-columns: repeat(6, minmax(0, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             }
 
             .stats-grid > .kpi-card:nth-child(1),
@@ -4054,9 +4054,13 @@ break;
                     const card1 = this.createCurrentWeekCard(currentWeek, bestRES, worstRES);
                     container.appendChild(card1);
 
-                    container.appendChild(this.createDataQualityCard(currentWeek));
-                    container.appendChild(this.createForecastCard());
-                    container.appendChild(this.createResBreakdownCard(currentWeek));
+                    for (let i = 1; i < Math.min(4, this.weeklyData.length); i++) {
+                        const weekData = this.weeklyData[i];
+                        const weekBestRES = this.findBestRES(weekData);
+                        const weekWorstRES = this.findWorstRES(weekData);
+                        const weekCard = this.createPreviousWeekCard(weekData, i, weekBestRES, weekWorstRES);
+                        container.appendChild(weekCard);
+                    }
 
                     if (this.weeklyData.length >= 2) {
                         const changesCard = this.createChangesCard();
@@ -4513,7 +4517,7 @@ break;
                 return card;
             }
 
-            createCurrentWeekCard(weekData, bestRES, worstRES) {
+            createKpiCurrentWeekCard(weekData, bestRES, worstRES) {
                 const card = document.createElement('div');
                 card.className = 'stat-card kpi-card kpi-card-primary';
 
@@ -4575,7 +4579,7 @@ break;
                 return card;
             }
 
-            createPreviousWeekCard(weekData, weeksAgo, bestRES, worstRES) {
+            createKpiPreviousWeekCard(weekData, weeksAgo, bestRES, worstRES) {
                 const card = document.createElement('div');
                 card.className = 'stat-card kpi-card';
 
@@ -4627,7 +4631,7 @@ break;
                 return card;
             }
 
-            createChangesCard() {
+            createKpiChangesCard() {
                 const card = document.createElement('div');
                 card.className = 'stat-card kpi-card kpi-card-primary';
 
