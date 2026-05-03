@@ -16,9 +16,9 @@
             --light: #f8fafc;
             --dark: #1e293b;
             --gray: #64748b;
-            --border-radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.3s ease;
+            --border-radius: 8px;
+            --shadow: 0 1px 2px rgba(15, 23, 42, 0.08), 0 8px 24px rgba(15, 23, 42, 0.06);
+            --transition: all 0.18s ease;
         }
 
         * {
@@ -29,7 +29,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background: #f6f8fb;
             color: var(--dark);
             min-height: 100vh;
             line-height: 1.6;
@@ -151,15 +151,15 @@
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 25px 30px;
+            background: white;
+            color: var(--dark);
+            padding: 22px 28px;
             border-radius: var(--border-radius);
             margin-bottom: 25px;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #e2e8f0;
         }
 
         .header-content {
@@ -174,18 +174,19 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            color: var(--primary);
         }
 
         .header-subtitle {
             font-size: 16px;
-            opacity: 0.95;
+            color: var(--dark);
             margin-bottom: 5px;
             font-weight: 500;
         }
 
         .header-description {
             font-size: 14px;
-            opacity: 0.85;
+            color: var(--gray);
             max-width: 700px;
         }
 
@@ -261,7 +262,7 @@
             display: flex;
             gap: 8px;
             background: white;
-            padding: 12px;
+            padding: 8px;
             border-radius: var(--border-radius);
             margin-bottom: 25px;
             box-shadow: var(--shadow);
@@ -272,10 +273,10 @@
         .tab-btn {
             flex: 1;
             min-width: 140px;
-            padding: 16px 24px;
+            padding: 12px 18px;
             background: transparent;
             border: 2px solid transparent;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
             color: var(--gray);
@@ -290,14 +291,14 @@
         .tab-btn:hover {
             background: #f8fafc;
             color: var(--dark);
-            transform: translateY(-1px);
+            border-color: #e2e8f0;
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--primary);
             color: white;
             border-color: var(--primary);
-            box-shadow: 0 6px 15px rgba(30, 64, 175, 0.25);
+            box-shadow: none;
         }
 
         /* Statistics Cards */
@@ -339,8 +340,8 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+            box-shadow: var(--shadow);
         }
 
         .stat-card:first-child {
@@ -1873,13 +1874,11 @@
                 admin: {
                     name: 'Администратор',
                     role: 'admin',
-                    passwordHash: '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
                     permissions: ['view', 'edit', 'delete', 'export', 'reports', 'input', 'backup', 'restore']
                 },
                 viewer: {
                     name: 'Наблюдатель',
                     role: 'viewer',
-                    passwordHash: '',
                     permissions: ['view', 'reports', 'export', 'history']
                 }
             },
@@ -1897,6 +1896,10 @@
                     }
                 } catch (_) {}
 
+                if (window.location.protocol === 'file:') {
+                    return 'http://localhost:3000';
+                }
+
                 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                     return 'http://localhost:3000';
                 }
@@ -1909,10 +1912,8 @@
             },
             API_ENDPOINTS: {
                 DATA: '/api/data',
-                STATS: '/api/stats',
-                EXPORT_JSON: '/api/export/json',
-                EXPORT_CSV: '/api/export/csv',
-                HEALTH: '/api/health'
+                HEALTH: '/api/health',
+                AUTH: '/api/login'
             }
         };
 
@@ -1922,16 +1923,17 @@
                 this.verticalChart = null;
                 this.currentUser = null;
                 this.apiBaseUrl = AppConfig.getApiBaseUrl();
-                this.adminPassword = (() => { try { return sessionStorage.getItem('opros_admin_password') || ''; } catch (_) { return ''; } })();
+                this.adminToken = (() => { try { return sessionStorage.getItem('opros_admin_token') || ''; } catch (_) { return ''; } })();
                 this.serverStatus = 'connecting';
                 this.init();
             }
 
             _writeHeaders() {
-                return {
-                    'Content-Type': 'application/json',
-                    'X-Admin-Password': this.adminPassword || ''
-                };
+                const headers = { 'Content-Type': 'application/json' };
+                if (this.adminToken) {
+                    headers.Authorization = `Bearer ${this.adminToken}`;
+                }
+                return headers;
             }
             
             async init() {
@@ -2016,7 +2018,13 @@
                 try {
                     const savedUser = localStorage.getItem(AppConfig.STORAGE_KEYS.USER);
                     if (savedUser) {
-                        this.currentUser = JSON.parse(savedUser);
+                        const parsedUser = JSON.parse(savedUser);
+                        if (parsedUser?.role === 'admin' && !this.adminToken) {
+                            localStorage.removeItem(AppConfig.STORAGE_KEYS.USER);
+                            this.showLogin();
+                            return;
+                        }
+                        this.currentUser = parsedUser;
                         this.showMainApp();
                     } else {
                         this.showLogin();
@@ -2180,19 +2188,6 @@
                 }
             }
             
-            async hashPassword(password) {
-                try {
-                    const encoder = new TextEncoder();
-                    const data = encoder.encode(password);
-                    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                } catch (error) {
-                    console.error('Ошибка хеширования пароля:', error);
-                    return password;
-                }
-            }
-            
             async login(event) {
                 event.preventDefault();
                 
@@ -2204,28 +2199,33 @@
                         this.showNotification('Выберите пользователя!', 'warning');
                         return;
                     }
-                    
-                    const user = AppConfig.USERS[username];
-                    
-                    if (!user) {
-                        this.showNotification('Пользователь не найден!', 'danger');
-                        return;
-                    }
-                    
-                    if (username === 'admin') {
-                        const inputHash = await this.hashPassword(password);
-                        if (inputHash !== user.passwordHash) {
-                            this.showNotification('Неверный пароль!', 'danger');
-                            return;
-                        }
-                        this.adminPassword = password;
-                        try { sessionStorage.setItem('opros_admin_password', password); } catch (_) {}
-                    }
-                    
+
                     if (username === 'viewer' && password !== '') {
                         this.showNotification('Для наблюдателя пароль не требуется!', 'warning');
                         return;
                     }
+
+                    const response = await fetch(`${this.apiBaseUrl}${AppConfig.API_ENDPOINTS.AUTH}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    if (!response.ok) {
+                        this.showNotification('Неверный логин или пароль!', 'danger');
+                        return;
+                    }
+
+                    const result = await response.json();
+                    const user = result.user || AppConfig.USERS[username];
+                    this.adminToken = result.token || '';
+                    try {
+                        if (this.adminToken) {
+                            sessionStorage.setItem('opros_admin_token', this.adminToken);
+                        } else {
+                            sessionStorage.removeItem('opros_admin_token');
+                        }
+                    } catch (_) {}
                     
                     this.currentUser = { 
                         name: user.name, 
@@ -2250,9 +2250,9 @@
             logout() {
                 if (confirm('Вы уверены, что хотите выйти из системы?')) {
                     this.currentUser = null;
-                    this.adminPassword = '';
+                    this.adminToken = '';
                     localStorage.removeItem(AppConfig.STORAGE_KEYS.USER);
-                    try { sessionStorage.removeItem('opros_admin_password'); } catch (_) {}
+                    try { sessionStorage.removeItem('opros_admin_token'); } catch (_) {}
                     this.showLogin();
                     this.showNotification('Вы успешно вышли из системы', 'info');
                 }
