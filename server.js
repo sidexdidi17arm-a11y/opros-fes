@@ -14,14 +14,14 @@ const ADMIN_SESSION_TTL_MS =
     : 8 * 60 * 60 * 1000;
 
 const RES_LIST = [
-  { id: "adler", name: "Адлерский РЭС", color: "#1e40af" },
-  { id: "dagomys", name: "Дагомысский РЭС", color: "#0ea5e9" },
-  { id: "krasnopolyansky", name: "Краснополянский РЭС", color: "#8b5cf6" },
-  { id: "lazarevsky", name: "Лазаревский РЭС", color: "#06b6d4" },
+  { id: "adler", name: "Адлерский РЭС", color: "#1d4ed8" },
+  { id: "dagomys", name: "Дагомысский РЭС", color: "#2563eb" },
+  { id: "krasnopolyansky", name: "Краснополянский РЭС", color: "#0ea5e9" },
+  { id: "lazarevsky", name: "Лазаревский РЭС", color: "#0284c7" },
   { id: "sochi", name: "Сочинский РЭС", color: "#3b82f6" },
-  { id: "tuapse", name: "Туапсинский РЭС", color: "#6366f1" },
-  { id: "hostinsky", name: "Хостинский РЭС", color: "#2563eb" },
-  { id: "ps", name: "ПС РЭС", color: "#7c3aed", isPsRes: true },
+  { id: "tuapse", name: "Туапсинский РЭС", color: "#60a5fa" },
+  { id: "hostinsky", name: "Хостинский РЭС", color: "#1e40af" },
+  { id: "ps", name: "ПС РЭС", color: "#64748b", isPsRes: true },
 ];
 
 const RES_BY_ID = new Map(RES_LIST.map((res) => [res.id, res]));
