@@ -1590,19 +1590,54 @@
             right: auto;
             bottom: 34px;
             z-index: 160;
-            max-width: 220px;
-            color: rgba(255, 255, 255, 0.82);
-            background: rgba(255, 255, 255, 0.10);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: none;
+            min-width: 176px;
+            max-width: 240px;
+            padding: 9px 14px;
+            color: #065f46;
+            background: #ffffff;
+            border: 2px solid #22c55e;
+            box-shadow: 0 14px 34px rgba(15, 52, 112, 0.28), 0 0 0 4px rgba(34, 197, 94, 0.14);
             border-radius: 999px;
+            font-weight: 900;
             backdrop-filter: blur(10px);
         }
 
         .server-status.online,
         .server-status.offline,
         .server-status.connecting {
-            border-color: rgba(255, 255, 255, 0.18);
+            background: #ffffff;
+        }
+
+        .server-status.online {
+            color: #065f46;
+            border-color: #22c55e;
+            box-shadow: 0 14px 34px rgba(15, 52, 112, 0.28), 0 0 0 4px rgba(34, 197, 94, 0.14);
+        }
+
+        .server-status.offline {
+            color: #991b1b;
+            border-color: #ef4444;
+            box-shadow: 0 14px 34px rgba(15, 52, 112, 0.28), 0 0 0 4px rgba(239, 68, 68, 0.13);
+        }
+
+        .server-status.connecting {
+            color: #92400e;
+            border-color: #f59e0b;
+            box-shadow: 0 14px 34px rgba(15, 52, 112, 0.28), 0 0 0 4px rgba(245, 158, 11, 0.14);
+        }
+
+        .server-status .status-dot {
+            width: 10px;
+            height: 10px;
+            box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.18);
+        }
+
+        .server-status .status-dot.offline {
+            box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.16);
+        }
+
+        .server-status .status-dot.connecting {
+            box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.18);
         }
 
         .tab-content {
